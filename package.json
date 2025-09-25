@@ -1,0 +1,8 @@
+{
+  "name": "medsecure-mock-frontend",
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "^4.18.2",
+    "lodash": "^4.17.21"
+  }
+}
