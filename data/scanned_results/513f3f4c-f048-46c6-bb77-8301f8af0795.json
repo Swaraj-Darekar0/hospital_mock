@@ -1,0 +1,221 @@
+{
+  "scan_id": "513f3f4c-f048-46c6-bb77-8301f8af0795",
+  "timestamp": "2025-10-12T22:57:22.073176",
+  "repository_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\hospital_mock",
+  "sector_hint": "Healthcare",
+  "repository_info": {
+    "readme": "# MedSecure Hospital Management System (Mocked Demo)\n\nThis is a mocked repository for demo purposes. It contains intentionally insecure and illustrative code patterns to exercise static analysis, SCA, and report generation workflows for HIPAA-related findings.\n\nSee the `policies/` folder for compliance context and `app/` for sample Python code that triggers analyzer heuristics.\n",
+    "policies": {
+      "access_control_policy.md": "# Access Control Policy (Mocked)\n\nDescribes roles, MFA requirements, password rules, and privileged access review cadence. Useful for enriching access-control related findings.\n",
+      "breach_response_policy.md": "# Breach Response Policy (Mocked)\n\nProvides detection, escalation, notification timelines and forensic steps. Useful for report generation that includes incident response guidance.\n",
+      "hipaa_compliance.md": "# HIPAA Compliance (Mocked)\n\nList of declared administrative, physical, and technical safeguards. Use to compare against analyzer findings for compliance narratives.\n\n- Admin: annual risk assessments, security officer, training\n- Physical: controlled server access, workstation policies\n- Technical: RBAC, MFA for admins, AES-256 for data at rest, TLS for transit\n- BAAs: cloud host and backup vendor\n",
+      "privacy_policy.md": "# MedSecure Hospital Privacy Policy (Mocked)\n\nThis mocked privacy policy describes PHI handling, retention, third-party sharing, and patient rights. Use this file to provide context for compliance report generation.\n\n- Data types: demographics, MRN, clinical notes, imaging, billing\n- Retention: active records while in care, 7 years post-treatment for inactive\n- Third-party sharing: BAAs required\n- Contact: privacy@medsecure-hospital.example\n"
+    },
+    "dependencies": {
+      "requirements.txt": {
+        "language": "python",
+        "content": "Flask==2.3.2\nPyJWT==2.8.0\nmysql-connector-python==8.1.0\nPyYAML==6.0\nparamiko==2.12.0\npycrypto==2.6.1\n"
+      },
+      "package.json": {
+        "language": "javascript",
+        "content": "{\n  \"name\": \"medsecure-mock-frontend\",\n  \"version\": \"0.0.1\",\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"lodash\": \"^4.17.21\"\n  }\n}\n"
+      }
+    },
+    "documentation": {}
+  },
+  "findings": [
+    {
+      "shortform_keyword": "HARDCODED-SECRET",
+      "file_path": "app\\auth.py",
+      "line_number": 6,
+      "severity": "CRITICAL",
+      "context_snippet": "JWT_SECRET = 'demo_jwt_secret'",
+      "source": "regex",
+      "pattern_name": "hardcoded_secret",
+      "confidence": "MEDIUM",
+      "title": "Hardcoded Credentials",
+      "description": "Sensitive credentials are hardcoded in the source code, making them accessible to anyone with code access.",
+      "remediation_steps": [
+        "Use environment variables for sensitive data",
+        "Implement secure credential management systems",
+        "Use encrypted configuration files",
+        "Implement proper access controls"
+      ],
+      "compliance_mappings": {
+        "OWASP_TOP_10": "A07:2021 \u00e2\u20ac\u201c Identification and Authentication Failures",
+        "CWE": "CWE-798: Use of Hard-coded Credentials",
+        "SOC2": "CC6.1"
+      }
+    },
+    {
+      "shortform_keyword": "DEBUG-MODE-ENABLED",
+      "file_path": "app\\app.py",
+      "line_number": 16,
+      "severity": "HIGH",
+      "context_snippet": "app.run(debug=True)",
+      "source": "regex",
+      "pattern_name": "debug_mode_enabled",
+      "confidence": "MEDIUM"
+    },
+    {
+      "shortform_keyword": "XSS-UNESC-OUTPUT",
+      "file_path": "app\\patient_routes.py",
+      "line_number": 12,
+      "severity": "HIGH",
+      "context_snippet": "return render_template_string(template)",
+      "source": "regex",
+      "pattern_name": "xss_template",
+      "confidence": "MEDIUM",
+      "title": "Cross-Site Scripting (XSS) via Unescaped Output",
+      "description": "User-controlled data is rendered in web pages without proper encoding, allowing attackers to inject malicious scripts.",
+      "remediation_steps": [
+        "Implement output encoding/escaping",
+        "Use Content Security Policy (CSP)",
+        "Validate and sanitize all input",
+        "Use secure templating engines"
+      ],
+      "compliance_mappings": {
+        "OWASP_TOP_10": "A03:2021 \u00e2\u20ac\u201c Injection",
+        "CWE": "CWE-79: Improper Neutralization of Input During Web Page Generation",
+        "PCI_DSS": "Requirement 6.2.4"
+      }
+    },
+    {
+      "shortform_keyword": "FLASK-DEBUG-TRUE",
+      "file_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\hospital_mock\\app\\app.py",
+      "line_number": 16,
+      "severity": "HIGH",
+      "context_snippet": "15 if __name__ == '__main__':\n16     app.run(debug=True)\n",
+      "source": "bandit",
+      "confidence": "HIGH",
+      "bandit_test_id": "B201",
+      "bandit_issue": "A Flask app appears to be run with debug=True, which exposes the Werkzeug debugger and allows the execution of arbitrary code."
+    },
+    {
+      "shortform_keyword": "HASHLIB-PBKDF2-WEAK",
+      "file_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\hospital_mock\\app\\auth.py",
+      "line_number": 9,
+      "severity": "HIGH",
+      "context_snippet": "8 USERS = {\n9     'dr.jones': {'password_hash': hashlib.md5('password123'.encode()).hexdigest(), 'role': 'clinician'}\n10 }\n",
+      "source": "bandit",
+      "confidence": "HIGH",
+      "bandit_test_id": "B324",
+      "bandit_issue": "Use of weak MD5 hash for security. Consider usedforsecurity=False"
+    },
+    {
+      "shortform_keyword": "WEAK-CRYPTO-HASH",
+      "file_path": "app\\auth.py",
+      "line_number": 9,
+      "severity": "MEDIUM",
+      "context_snippet": "'dr.jones': {'password_hash': hashlib.md5('password123'.encode()).hexdigest(), 'role': 'clinician'}",
+      "source": "regex",
+      "pattern_name": "weak_password_hash",
+      "confidence": "MEDIUM"
+    },
+    {
+      "shortform_keyword": "INSECURE-TEMPFILE",
+      "file_path": "app\\file_upload.py",
+      "line_number": 6,
+      "severity": "MEDIUM",
+      "context_snippet": "UPLOAD_DIR = '/tmp/medsecure_uploads'",
+      "source": "regex",
+      "pattern_name": "insecure_tempfile",
+      "confidence": "MEDIUM"
+    },
+    {
+      "shortform_keyword": "SQL-INJECTION-BANDIT",
+      "file_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\hospital_mock\\app\\db.py",
+      "line_number": 5,
+      "severity": "MEDIUM",
+      "context_snippet": "4 def get_patient_query(mrn):\n5     return f\"SELECT * FROM patients WHERE mrn = '{mrn}'\"\n6 \n",
+      "source": "bandit",
+      "confidence": "HIGH",
+      "bandit_test_id": "B608",
+      "bandit_issue": "Possible SQL injection vector through string-based query construction."
+    },
+    {
+      "shortform_keyword": "INSECURE-TEMPFILE",
+      "file_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\hospital_mock\\app\\file_upload.py",
+      "line_number": 6,
+      "severity": "MEDIUM",
+      "context_snippet": "5 \n6 UPLOAD_DIR = '/tmp/medsecure_uploads'\n7 \n",
+      "source": "bandit",
+      "confidence": "HIGH",
+      "bandit_test_id": "B108",
+      "bandit_issue": "Probable insecure usage of temp file/directory."
+    },
+    {
+      "shortform_keyword": "JS-DEPENDENCY-POTENTIAL-RISK",
+      "file_path": "package.json",
+      "line_number": 0,
+      "severity": "LOW",
+      "context_snippet": "express: ^4.18.2"
+    },
+    {
+      "shortform_keyword": "JS-DEPENDENCY-POTENTIAL-RISK",
+      "file_path": "package.json",
+      "line_number": 0,
+      "severity": "LOW",
+      "context_snippet": "lodash: ^4.17.21"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 1,
+      "severity": "INFO",
+      "context_snippet": "Flask pinned to 2.3.2"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 2,
+      "severity": "INFO",
+      "context_snippet": "PyJWT pinned to 2.8.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 3,
+      "severity": "INFO",
+      "context_snippet": "mysql-connector-python pinned to 8.1.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 4,
+      "severity": "INFO",
+      "context_snippet": "PyYAML pinned to 6.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 5,
+      "severity": "INFO",
+      "context_snippet": "paramiko pinned to 2.12.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 6,
+      "severity": "INFO",
+      "context_snippet": "pycrypto pinned to 2.6.1"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-POTENTIALLY-RISKY",
+      "file_path": "requirements.txt",
+      "line_number": 6,
+      "severity": "MEDIUM",
+      "context_snippet": "pycrypto==2.6.1"
+    }
+  ],
+  "summary": {
+    "total_findings": 18,
+    "severity_breakdown": {
+      "CRITICAL": 1,
+      "HIGH": 4,
+      "MEDIUM": 5,
+      "LOW": 2,
+      "INFO": 6
+    }
+  }
+}

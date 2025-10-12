@@ -1,0 +1,190 @@
+{
+  "scan_id": "3cf3ec3e-a374-4f0d-b1ce-e970079fdec8",
+  "timestamp": "2025-09-25T03:37:02.125741Z",
+  "repo_path": "hospital_mock",
+  "sector_hint": "Healthcare",
+  "repo_info": {
+    "found": {},
+    "policy_files": {
+      "policies\\access_control_policy.md": "# Access Control Policy (Mocked)\n\nDescribes roles, MFA requirements, password rules, and privileged access review cadence. Useful for enriching access-control related findings.\n",
+      "policies\\breach_response_policy.md": "# Breach Response Policy (Mocked)\n\nProvides detection, escalation, notification timelines and forensic steps. Useful for report generation that includes incident response guidance.\n",
+      "policies\\privacy_policy.md": "# MedSecure Hospital Privacy Policy (Mocked)\n\nThis mocked privacy policy describes PHI handling, retention, third-party sharing, and patient rights. Use this file to provide context for compliance report generation.\n\n- Data types: demographics, MRN, clinical notes, imaging, billing\n- Retention: active records while in care, 7 years post-treatment for inactive\n- Third-party sharing: BAAs required\n- Contact: privacy@medsecure-hospital.example\n"
+    }
+  },
+  "findings": [
+    {
+      "shortform_keyword": "HARDCODED-SECRET",
+      "file_path": "app\\auth.py",
+      "line_number": 6,
+      "severity": "HIGH",
+      "context_snippet": "JWT_SECRET = 'demo_jwt_secret'",
+      "title": "Hardcoded Credentials",
+      "description": "Sensitive credentials are hardcoded in the source code, making them accessible to anyone with code access.",
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "WEAK-CRYPTO-MD5",
+      "file_path": "app\\auth.py",
+      "line_number": 0,
+      "severity": "MEDIUM",
+      "context_snippet": "Use of MD5 detected",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "INSECURE-TEMPFILE",
+      "file_path": "app\\file_upload.py",
+      "line_number": 9,
+      "severity": "LOW",
+      "context_snippet": "tmp = tempfile.NamedTemporaryFile(delete=False)",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "POTENTIAL-XSS-TEMPLATE",
+      "file_path": "app\\patient_routes.py",
+      "line_number": 2,
+      "severity": "MEDIUM",
+      "context_snippet": "# Demonstrates PHI handling, render_template_string usage, and logging of PHI for analyzer evidence.",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "POTENTIAL-XSS-TEMPLATE",
+      "file_path": "app\\patient_routes.py",
+      "line_number": 4,
+      "severity": "MEDIUM",
+      "context_snippet": "from flask import Blueprint, request, jsonify, render_template_string",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "POTENTIAL-XSS-TEMPLATE",
+      "file_path": "app\\patient_routes.py",
+      "line_number": 12,
+      "severity": "MEDIUM",
+      "context_snippet": "return render_template_string(template)",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "JS-DEPENDENCY-POTENTIAL-RISK",
+      "file_path": "package.json",
+      "line_number": 0,
+      "severity": "LOW",
+      "context_snippet": "express: ^4.18.2",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "JS-DEPENDENCY-POTENTIAL-RISK",
+      "file_path": "package.json",
+      "line_number": 0,
+      "severity": "LOW",
+      "context_snippet": "lodash: ^4.17.21",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 1,
+      "severity": "INFO",
+      "context_snippet": "Flask pinned to 2.3.2",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 2,
+      "severity": "INFO",
+      "context_snippet": "PyJWT pinned to 2.8.0",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 3,
+      "severity": "INFO",
+      "context_snippet": "mysql-connector-python pinned to 8.1.0",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 4,
+      "severity": "INFO",
+      "context_snippet": "PyYAML pinned to 6.0",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 5,
+      "severity": "INFO",
+      "context_snippet": "paramiko pinned to 2.12.0",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 6,
+      "severity": "INFO",
+      "context_snippet": "pycrypto pinned to 2.6.1",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-POTENTIALLY-RISKY",
+      "file_path": "requirements.txt",
+      "line_number": 6,
+      "severity": "MEDIUM",
+      "context_snippet": "pycrypto==2.6.1",
+      "title": null,
+      "description": null,
+      "remediation": null,
+      "compliance": []
+    }
+  ],
+  "summary": {
+    "total_findings": 15,
+    "severity_breakdown": {
+      "HIGH": 1,
+      "MEDIUM": 5,
+      "LOW": 3,
+      "INFO": 6
+    }
+  }
+}

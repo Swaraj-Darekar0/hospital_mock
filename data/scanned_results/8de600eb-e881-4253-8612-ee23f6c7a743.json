@@ -1,0 +1,136 @@
+{
+  "scan_id": "8de600eb-e881-4253-8612-ee23f6c7a743",
+  "timestamp": "2025-10-12T21:23:20.321947",
+  "repository_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\hospital_mock",
+  "sector_hint": "Healthcare",
+  "repository_info": {
+    "readme": "# MedSecure Hospital Management System (Mocked Demo)\n\nThis is a mocked repository for demo purposes. It contains intentionally insecure and illustrative code patterns to exercise static analysis, SCA, and report generation workflows for HIPAA-related findings.\n\nSee the `policies/` folder for compliance context and `app/` for sample Python code that triggers analyzer heuristics.\n",
+    "policies": {
+      "access_control_policy.md": "# Access Control Policy (Mocked)\n\nDescribes roles, MFA requirements, password rules, and privileged access review cadence. Useful for enriching access-control related findings.\n",
+      "breach_response_policy.md": "# Breach Response Policy (Mocked)\n\nProvides detection, escalation, notification timelines and forensic steps. Useful for report generation that includes incident response guidance.\n",
+      "hipaa_compliance.md": "# HIPAA Compliance (Mocked)\n\nList of declared administrative, physical, and technical safeguards. Use to compare against analyzer findings for compliance narratives.\n\n- Admin: annual risk assessments, security officer, training\n- Physical: controlled server access, workstation policies\n- Technical: RBAC, MFA for admins, AES-256 for data at rest, TLS for transit\n- BAAs: cloud host and backup vendor\n",
+      "privacy_policy.md": "# MedSecure Hospital Privacy Policy (Mocked)\n\nThis mocked privacy policy describes PHI handling, retention, third-party sharing, and patient rights. Use this file to provide context for compliance report generation.\n\n- Data types: demographics, MRN, clinical notes, imaging, billing\n- Retention: active records while in care, 7 years post-treatment for inactive\n- Third-party sharing: BAAs required\n- Contact: privacy@medsecure-hospital.example\n"
+    },
+    "dependencies": {
+      "requirements.txt": {
+        "language": "python",
+        "content": "Flask==2.3.2\nPyJWT==2.8.0\nmysql-connector-python==8.1.0\nPyYAML==6.0\nparamiko==2.12.0\npycrypto==2.6.1\n"
+      },
+      "package.json": {
+        "language": "javascript",
+        "content": "{\n  \"name\": \"medsecure-mock-frontend\",\n  \"version\": \"0.0.1\",\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"lodash\": \"^4.17.21\"\n  }\n}\n"
+      }
+    },
+    "documentation": {}
+  },
+  "findings": [
+    {
+      "shortform_keyword": "POTENTIAL-XSS-TEMPLATE",
+      "file_path": "app\\app.py",
+      "line_number": 16,
+      "severity": "HIGH",
+      "context_snippet": "15 if __name__ == '__main__':\n16     app.run(debug=True)",
+      "source": "bandit",
+      "bandit_test_id": "B201"
+    },
+    {
+      "shortform_keyword": "WEAK-CRYPTO-HASH",
+      "file_path": "app\\auth.py",
+      "line_number": 9,
+      "severity": "HIGH",
+      "context_snippet": "8 USERS = {\n9     'dr.jones': {'password_hash': hashlib.md5('password123'.encode()).hexdigest(), 'role': 'clinician'}\n10 }",
+      "source": "bandit",
+      "bandit_test_id": "B324"
+    },
+    {
+      "shortform_keyword": "SQL-INJECTION-PATTERN",
+      "file_path": "app\\db.py",
+      "line_number": 5,
+      "severity": "MEDIUM",
+      "context_snippet": "4 def get_patient_query(mrn):\n5     return f\"SELECT * FROM patients WHERE mrn = '{mrn}'\"\n6",
+      "source": "bandit",
+      "bandit_test_id": "B608"
+    },
+    {
+      "shortform_keyword": "INSECURE-TEMPFILE",
+      "file_path": "app\\file_upload.py",
+      "line_number": 6,
+      "severity": "MEDIUM",
+      "context_snippet": "5 \n6 UPLOAD_DIR = '/tmp/medsecure_uploads'\n7",
+      "source": "bandit",
+      "bandit_test_id": "B108"
+    },
+    {
+      "shortform_keyword": "JS-DEPENDENCY-POTENTIAL-RISK",
+      "file_path": "package.json",
+      "line_number": 0,
+      "severity": "LOW",
+      "context_snippet": "express: ^4.18.2"
+    },
+    {
+      "shortform_keyword": "JS-DEPENDENCY-POTENTIAL-RISK",
+      "file_path": "package.json",
+      "line_number": 0,
+      "severity": "LOW",
+      "context_snippet": "lodash: ^4.17.21"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 1,
+      "severity": "INFO",
+      "context_snippet": "Flask pinned to 2.3.2"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 2,
+      "severity": "INFO",
+      "context_snippet": "PyJWT pinned to 2.8.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 3,
+      "severity": "INFO",
+      "context_snippet": "mysql-connector-python pinned to 8.1.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 4,
+      "severity": "INFO",
+      "context_snippet": "PyYAML pinned to 6.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 5,
+      "severity": "INFO",
+      "context_snippet": "paramiko pinned to 2.12.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 6,
+      "severity": "INFO",
+      "context_snippet": "pycrypto pinned to 2.6.1"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-POTENTIALLY-RISKY",
+      "file_path": "requirements.txt",
+      "line_number": 6,
+      "severity": "MEDIUM",
+      "context_snippet": "pycrypto==2.6.1"
+    }
+  ],
+  "summary": {
+    "total_findings": 13,
+    "severity_breakdown": {
+      "HIGH": 2,
+      "MEDIUM": 3,
+      "LOW": 2,
+      "INFO": 6
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "scan_id": "404a7aec-788a-48be-ab98-5273bee6405d",
+  "timestamp": "2025-10-13T01:16:17.546907",
+  "repository_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\DataMapping-on-Image-using-Python",
+  "sector_hint": "SaaS Platform",
+  "plan_used": "basic",
+  "repository_info": {
+    "readme": "# Receipt Generator for ICETI4T 2025 using Streamlit + FPDF\n--\nThis project is built to generate official **receipts for ICETI4T 2025** based on participant data uploaded via an Excel sheet. It uses a professional template image and a clean font to produce PDF files for each entry \u2014 downloadable individually or in bulk.\n\nWhile this tool is currently tailored for generating **receipts**, you can easily repurpose it for:\n- Participation **certificates**\n- **Invoices**\n- **Event passes**\n- Or **any document** where dynamic data needs to be placed on a pre-designed template.\n\n> \u2699\ufe0f **Note:** The text placement (X, Y coordinates) is fixed inside the code under the `COORDINATES` dictionary. You are free to adjust the positions and template to suit your layout.\n\n---\n\n## Features\n\n- Upload Excel files with structured participant data.\n- Preview and filter uploaded data.\n- Generate single or bulk PDFs.\n- Preview PDFs live in the browser.\n- Download all generated documents as a `.zip`.\n- Easy to modify for any custom layout or use-case.\n\n---\n\n## Required Files\n\nMake sure you have the following in the root directory:\n\n- **Template Image**: `Black and White Minimalist Business Invoice.png`  \n  Used as the background for each receipt (can be replaced with any design).\n\n- **Font File**: `Ubuntu-Medium.ttf`  \n  Used to render the text professionally onto the PDF.\n\n---\n\n## COORDINATE SETTINGS\n\nText placement is handled by this dictionary:\n\n```python\nCOORDINATES = {\n    \"InvoiceID\": (135, 57),\n    \"Date\": (135, 75),\n    \"ClientName\": (10, 75),\n    \"Amount\": (10, 187),\n    \"Description\": (10, 135),\n}\n```\n## App preview\n![image](https://github.com/user-attachments/assets/c4f1547b-404b-4847-a44c-ee0b36162698)\n![image](https://github.com/user-attachments/assets/a9ffbc67-9bc7-4769-9ee1-32a67db350d1)\n\n## Example reciept\n![image](https://github.com/user-attachments/assets/18da7a61-6993-4afa-8364-e0feb366e3b0)\n\nYou can easily adapt this same method to create certificates, invoices, ID cards, or any other document where data needs to be placed on a custom design \u2014 just update the template and coordinates!\n",
+    "policies": {},
+    "dependencies": {
+      "requirements.txt": {
+        "language": "python",
+        "content": "streamlit==1.34.0\npandas==2.2.2\nfpdf2==2.7.7\nopenpyxl==3.1.2\nPillow==10.3.0"
+      }
+    },
+    "documentation": {}
+  },
+  "findings": [],
+  "summary": {
+    "total_findings": 0,
+    "severity_breakdown": {}
+  }
+}

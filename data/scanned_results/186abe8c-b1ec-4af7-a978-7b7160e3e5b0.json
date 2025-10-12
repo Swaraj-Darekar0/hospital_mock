@@ -1,0 +1,81 @@
+{
+  "scan_id": "186abe8c-b1ec-4af7-a978-7b7160e3e5b0",
+  "timestamp": "2025-10-12T21:31:38.480037",
+  "repository_path": "D:\\Downloads\\Project\\SecurityMongul\\backend\\PulledCode\\June-Voice-AI",
+  "sector_hint": "SaaS Platform",
+  "repository_info": {
+    "readme": "\n\n\n# \ud83c\udf99\ufe0f June \u2013 Voice-Driven AI Assistant (Gemini + Kokoro TTS)\n\nJune is an expressive voice-based assistant that listens to what you say, understands it using Whisper, thinks using Gemini (LLM), and speaks back using Kokoro TTS \u2014 with emotional tone detection and voice switching.\n\nWhether you're asking a factual question, telling a suspense story, or getting flirty, June responds accordingly with different personalities and voices.\n\n\ud83d\udcf9 **Demo Video:**\n\n\u27a1\ufe0f [Click to watch the demo](media/Live_video.mp4)\n---\n\n## \ud83d\udccc Abstract\n\nThis project integrates:\n- \ud83d\udd0a Real-time voice input (recorded via FastAPI)\n- \ud83e\udde0 Gemini Flash for conversational responses\n- \ud83c\udfa7 Faster-Whisper for speech-to-text transcription\n- \ud83d\udde3\ufe0f Kokoro TTS for real-time text-to-speech (Dockerized)\n- \ud83e\udde0 Context-based voice switching based on **flirt**, **drama**, or **neutral** tones\n\n---\n\n## \u2728 Features\n\n- \ud83c\udf99\ufe0f Record your voice and transcribe it to text with `faster-whisper`\n- \ud83e\udde0 Get intelligent, concise replies from Google Gemini\n- \ud83d\udde3\ufe0f Hear June speak back using Kokoro TTS with emotion-aware voices\n- \ud83d\ude0f Detect flirtatious or inappropriate prompts and reply in **Andrew Tate style**\n- \ud83c\udfac Switch to cinematic/suspense voice when dramatic tones are detected\n- \ud83d\udc69 Default warm assistant voice (af_bella)\n- \ud83d\uded1 Voice-commanded exit using phrases like \u201cexit now\u201d\n\n---\n\n### \u2699\ufe0f Installation & Setup\n\n### 1. Clone the repo\n\n```bash\ngit clone https://github.com/Swaraj-Darekar0/June-Voice-AI.git\ncd June-Voice-AI\n\n```\n### 2. Install Python dependencies\n\n```bash\npip install -r requirements.txt\n```\n\n### 3. Run Kokoro TTS using Docker\n\nMake sure Docker is installed and running. Then run:\n\n```bash\ndocker run -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-cpu:latest # CPU, or:\ndocker run --gpus all -p 8880:8880 ghcr.io/remsky/kokoro-fastapi-gpu:latest  #NVIDIA GPU\n```\n\nThis runs the Kokoro TTS engine locally on port `8880`.\n\n### 4. Start FastAPI backend\n\nIn a new terminal window/tab:\n\n```bash\nuvicorn t_api:app --reload\n```\n\nThis will expose:\n* Increase/Decrease the threshold in `t_api.py` Depending on your mic \n* `POST /record` \u2013 records mic input until silence\n* `POST /transcribe` \u2013 returns transcription of the latest recording\n\n### 5. Start the main chatbot\n\nIn another terminal window:\n\n```bash\npython june.py\n```\n\nNow speak naturally, and Julie will:\n\n* \u2705 Respond with smart, relevant answers\n* \ud83d\ude0f Switch to Andrew Tate tone if you flirt\n* \ud83c\udfac Speak dramatically if you say *\u201ctell me a suspense story\u201d*\n* \ud83d\uded1 Exit if you say *\u201cexit now\u201d*\n\n---\n\n\n## \ud83e\udde0 Tech Stack\n\n| Component     | Technology                    |\n| ------------- | ----------------------------- |\n| ASR (Speech)  | `faster-whisper`              |\n| LLM (Reply)   | `Gemini Flash` (Google API)   |\n| Voice Synth   | `Kokoro TTS` via Docker       |\n| Audio Input   | `PyAudio + FastAPI`           |\n| Audio Output  | `pygame`                      |\n| Emotion Logic | Custom keyword-based triggers |\n\n---\n\n## \ud83d\udcc1 Project Structure\n\n```bash\n\u251c\u2500\u2500 june.py           # Main assistant logic (conversation loop)\n\u251c\u2500\u2500 t_api.py          # FastAPI backend for record/transcribe\n\u251c\u2500\u2500 requirements.txt  # Python dependencies\n\u251c\u2500\u2500 conversation_history.json  # Saved logs\n```\n\n---\n\n## \ud83d\udd10 Notes\n\n* Requires Gemini API key from Google.\n* Make sure port `8880` is available for Kokoro TTS.\n* All audio processing is local except Gemini requests.\n* Latency depends upon your device power\n---\n\n## \ud83d\udc68\u200d\ud83d\udcbb Author\n\nBuilt by `Swaraj Darekar`,\nActively looking for internships in AI, conversational agents, and voice tech.\nFeel free to fork, star, or reach out!\n\n---\n",
+    "policies": {},
+    "dependencies": {
+      "requirements.txt": {
+        "language": "python",
+        "content": "fastapi==0.111.0\npyaudio\npygame\nrequests==2.31.0\ncolorama\nfaster-whisper\nnumpy==1.24.0\ngoogle-generativeai\nuvicorn==0.19.0"
+      }
+    },
+    "documentation": {}
+  },
+  "findings": [
+    {
+      "shortform_keyword": "PATH-TRAVERSAL",
+      "file_path": "june.py",
+      "line_number": 88,
+      "severity": "MEDIUM",
+      "context_snippet": "87     try:\n88         tts_resp = requests.post(\n89             \"http://localhost:8880/v1/audio/speech\",\n90             json={\n91                 \"model\": \"kokoro\",\n92                 \"input\": response_text,\n93                 \"voice\": voice,\n94                 \"response_format\": \"mp3\",\n95          ",
+      "source": "bandit",
+      "bandit_test_id": "B113"
+    },
+    {
+      "shortform_keyword": "PATH-TRAVERSAL",
+      "file_path": "june.py",
+      "line_number": 112,
+      "severity": "MEDIUM",
+      "context_snippet": "111     try:\n112         response = requests.post(R_API_URL)\n113         return response.status_code == 200",
+      "source": "bandit",
+      "bandit_test_id": "B113"
+    },
+    {
+      "shortform_keyword": "PATH-TRAVERSAL",
+      "file_path": "june.py",
+      "line_number": 120,
+      "severity": "MEDIUM",
+      "context_snippet": "119     try:\n120         response = requests.post(T_API_URL)\n121         if response.status_code == 200:",
+      "source": "bandit",
+      "bandit_test_id": "B113"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 1,
+      "severity": "INFO",
+      "context_snippet": "fastapi pinned to 0.111.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 4,
+      "severity": "INFO",
+      "context_snippet": "requests pinned to 2.31.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 7,
+      "severity": "INFO",
+      "context_snippet": "numpy pinned to 1.24.0"
+    },
+    {
+      "shortform_keyword": "DEPENDENCY-VERSION-PIN",
+      "file_path": "requirements.txt",
+      "line_number": 9,
+      "severity": "INFO",
+      "context_snippet": "uvicorn pinned to 0.19.0"
+    }
+  ],
+  "summary": {
+    "total_findings": 7,
+    "severity_breakdown": {
+      "MEDIUM": 3,
+      "INFO": 4
+    }
+  }
+}
